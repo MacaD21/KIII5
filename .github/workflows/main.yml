@@ -9,12 +9,16 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
-
+    build:
+  runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Run Super-Linter
-      uses: github/super-linter@v3
-      env:
-        VALIDATE_ALL_CODEBASE: true
+      # ... other steps ...
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: your-docker-image-name:${{ github.sha }}
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
